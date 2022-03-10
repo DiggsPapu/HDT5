@@ -3,7 +3,7 @@ import simpy
 import random
 import math
 
-# list = []
+
 RANDOM_SEED = 3
 #We create the environment
 env = simpy.Environment()
@@ -87,7 +87,7 @@ class DES:
         self.IO = simpy.Resource(env, capacity =1) 
         self.Processor = insProcessor
         print(self.Processor)
-
+#This code was obtained from https://stackabuse.com/calculating-variance-and-standard-deviation-in-python/
 def standarDeviation(data, mean,ddof=0):
         variance =sum((x - mean) ** 2 for x in data) / (len(data) - ddof)
         std_dev = math.sqrt(variance)
@@ -95,47 +95,52 @@ def standarDeviation(data, mean,ddof=0):
         
 
     
+#This is the try where u can put the numbers that u want. To see it you have to comment the automatized one.
+list = []
+try:
+    num = int(input("Write down the amount of process : "))
+    val = int(input("Write down the amount of RAM : "))
+    amo = int(input("Write down the amount of CPU : "))
+    interval = int(input("Write down the interval of comming: "))
+    process = int(input("Write the maximum amount of instructions in a processing : "))
+        # Create a CPU and a RAM
+    des = DES(env, val, amo, process)
 
-# try:
-#     num = int(input("Write down the amount of process : "))
-#     val = int(input("Write down the amount of RAM : "))
-#     amo = int(input("Write down the amount of CPU : "))
-#     interval = int(input("Write down the interval of comming: "))
-#     process = int(input("Write the maximum amount of instructions in a processing : "))
-#         # Create a CPU and a RAM
-#     des = DES(env, val, amo, process)
+    #Create the processes
 
-#     #Create the processes
-
-#     for i in range(num):
-#         creationTime = random.expovariate(1/interval)
-#         print("Program %d will come at %s" %(i, creationTime))
-#         env.process(NewProcess(env, "Program %e"%i, creationTime, des))
+    for i in range(num):
+        #velocity of creation, exponencial rate.
+        creationTime = random.expovariate(1/interval)
+        print("Program %d will come at %s" %(i, creationTime))
+        env.process(NewProcess(env, "Program %e"%i, creationTime, des))
 
 
     
 
-#     env.run()
-#     mean = 0
-#     devSt = 0
-#     try:
-#         mean = sum(list)/len(list)
-#         devSt=standarDeviation(list, mean)
-#     except:
-#         mean=0
-#         devSt=0
+    env.run()
+    mean = 0
+    devSt = 0
+    try:
+        #get mean and standard deviation
+        mean = sum(list)/len(list)
+        devSt=standarDeviation(list, mean)
+    except:
+        mean=0
+        devSt=0
 
 
 
 
 
-#     print("The mean time for a process while using %d amount of RAM, %d amount of CPU and an interval of comming of %d is: %d units of time"% (val, amo,interval,mean))
-#     print("The standar deviation time for a process while using %d amount of RAM, %d amount of CPU and an interval of comming of %d is: %d units of time"% (val, amo,interval, devSt))
+    print("The mean time for a process while using %d amount of RAM, %d amount of CPU and an interval of comming of %d is: %d units of time"% (val, amo,interval,mean))
+    print("The standar deviation time for a process while using %d amount of RAM, %d amount of CPU and an interval of comming of %d is: %d units of time"% (val, amo,interval, devSt))
 
 
-# except:
-#     print("No ingreso un valor valido")
+except:
+    print("No ingreso un valor valido")
 
+
+#From here on I automatized the process for interval, number of process, memory capacity, amount of CPU, number of interval, and amount of instructions done in 1 run
 listNum = []
 listVal = []
 listAmo = []
