@@ -3,7 +3,7 @@ import simpy
 import random
 import math
 
-list = []
+# list = []
 RANDOM_SEED = 3
 #We create the environment
 env = simpy.Environment()
@@ -27,7 +27,8 @@ def NewProcess(env,name, time, DES):
                 
                 #To run the instructions
                 counter = 0
-                while (counter<2):
+                print(DES.Processor)
+                while (counter<DES.Processor):
                     ins -= 1
                     if (ins<=0):
                         break
@@ -79,10 +80,13 @@ class DES:
     RAM = simpy.Container(env, init = 100, capacity= 100)
     CPU = simpy.Resource(env, capacity = 1)
     IO = simpy.Resource(env, capacity =1)
-    def __init__(self, env, val, amo) -> None:
+    Processor = 3
+    def __init__(self, env, val, amo, insProcessor) -> None:
         self.RAM = simpy.Container(env, init = val, capacity= val)
         self.CPU = simpy.Resource(env, capacity = amo)
         self.IO = simpy.Resource(env, capacity =1) 
+        self.Processor = insProcessor
+        print(self.Processor)
 
 def standarDeviation(data, mean,ddof=0):
         variance =sum((x - mean) ** 2 for x in data) / (len(data) - ddof)
@@ -92,70 +96,24 @@ def standarDeviation(data, mean,ddof=0):
 
     
 
-try:
-    num = int(input("Write down the amount of process : "))
-    val = int(input("Write down the amount of RAM : "))
-    amo = int(input("Write down the amount of CPU : "))
-    interval = int(input("Write down the interval of comming: "))
-        # Create a CPU and a RAM
-    des = DES(env, val, amo)
-    des.__init__(env, val, amo)
+# try:
+#     num = int(input("Write down the amount of process : "))
+#     val = int(input("Write down the amount of RAM : "))
+#     amo = int(input("Write down the amount of CPU : "))
+#     interval = int(input("Write down the interval of comming: "))
+#     process = int(input("Write the maximum amount of instructions in a processing : "))
+#         # Create a CPU and a RAM
+#     des = DES(env, val, amo, process)
 
-    #Create the processes
-
-    for i in range(num):
-        creationTime = random.expovariate(1/interval)
-        print("Program %d will come at %s" %(i, creationTime))
-        env.process(NewProcess(env, "Program %e"%i, creationTime, DES))
-
-
-    
-
-    env.run()
-    mean = 0
-    devSt = 0
-    try:
-        mean = sum(list)/len(list)
-        devSt=standarDeviation(list, mean)
-    except:
-        mean=0
-        devSt=0
-
-
-
-
-
-    print("The mean time for a process while using %d amount of RAM, %d amount of CPU and an interval of comming of %d is: %d units of time"% (val, amo,interval,mean))
-    print("The standar deviation time for a process while using %d amount of RAM, %d amount of CPU and an interval of comming of %d is: %d units of time"% (val, amo,interval, devSt))
-
-
-except:
-    print("No ingreso un valor valido")
-
-# listNumProcess=[]
-# listMean=[]
-# listDesv=[]
-# k=25
-# j = 0
-# while(k*j<250):
-#     list = []
-#     num = k*j
-#     val = 100
-#     amo = 1
-#     interval = 1
-#             # Create a CPU and a RAM
-#     des = DES(env, val, amo)
-#     des.__init__(env, val, amo)
-
-#         #Create the processes
+#     #Create the processes
 
 #     for i in range(num):
 #         creationTime = random.expovariate(1/interval)
 #         print("Program %d will come at %s" %(i, creationTime))
-#         env.process(NewProcess(env, "Program %e"%i, creationTime, DES))
+#         env.process(NewProcess(env, "Program %e"%i, creationTime, des))
 
 
-        
+    
 
 #     env.run()
 #     mean = 0
@@ -166,10 +124,78 @@ except:
 #     except:
 #         mean=0
 #         devSt=0
-#     listMean.append(mean)
-#     listDesv.append(devSt)
-# for k in range(0, len(listNumProcess)):
-#     print(listNumProcess)
-#     print("The mean time for a process while using %d amount of RAM, %d amount of CPU and an interval of comming of %d is: %d units of time"% (100, 1,1,listMean[k]))
-#     print("The standar deviation time for a process while using %d amount of RAM, %d amount of CPU and an interval of comming of %d is: %d units of time"% (100, 1,1,listMean[k]))
-#     print("_____________________________________________________________________________________________________________________________________________")
+
+
+
+
+
+#     print("The mean time for a process while using %d amount of RAM, %d amount of CPU and an interval of comming of %d is: %d units of time"% (val, amo,interval,mean))
+#     print("The standar deviation time for a process while using %d amount of RAM, %d amount of CPU and an interval of comming of %d is: %d units of time"% (val, amo,interval, devSt))
+
+
+# except:
+#     print("No ingreso un valor valido")
+
+listNum = []
+listVal = []
+listAmo = []
+listInterval = []
+listMean = []
+listDevest = []
+listProcess=[]
+for k in range(0,9):
+    list = []
+    try:
+        
+        num = 25*k
+        listNum.append(num)
+        val = 100
+        listVal.append(val)
+        amo = 1
+        listAmo.append(amo)
+        interval = 1
+        listInterval.append(interval)
+        process = 3
+        listProcess.append(process)
+            # Create a CPU and a RAM
+        des = DES(env, val, amo, process)
+
+        #Create the processes
+
+        for i in range(num):
+            creationTime = random.expovariate(1/interval)
+            print("Program %d will come at %s" %(i, creationTime))
+            env.process(NewProcess(env, "Program %e"%i, creationTime, des))
+
+
+        
+
+        env.run()
+        mean = 0
+        devSt = 0
+        try:
+            mean = sum(list)/len(list)
+            listMean.append(mean)
+            devSt=standarDeviation(list, mean)
+            listDevest.append(devSt)
+        except:
+            mean=0
+            listMean.append(mean)
+            devSt=0
+            listDevest.append(devSt)
+        
+
+
+
+
+
+        print("%d: The mean time for a process, while using %d amount of RAM, %d amount of CPU, an interval of comming of %d and execution of %d instructions each time is: %d units of time"% (num,val, amo,interval,process,mean))
+        print("%d: The standar deviation time for a process, while using %d amount of RAM, %d amount of CPU, an interval of comming of %d and execution of %d instructions each time is: %d units of time"% (num,val, amo,interval, process, devSt))
+
+
+    except:
+        print("No ingreso un valor valido")
+
+for k in range(0, len(listNum)):
+    print("%d: The mean time for a process, while using %d amount of RAM, %d amount of CPU, an interval of comming of %d and execution of %d instructions each time is: %d units of time"% (listNum[k],listVal[k], listAmo[k],listInterval[k],listProcess[k],listMean[k]))
+    print("%d: The standar deviation time for a process, while using %d amount of RAM, %d amount of CPU, an interval of comming of %d and execution of %d instructions each time is: %d units of time"% (listNum[k],listVal[k], listAmo[k],listInterval[k],listProcess[k],listDevest[k]))
