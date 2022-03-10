@@ -1,4 +1,4 @@
-from multiprocessing.connection import wait
+
 import simpy
 import random
 import math
@@ -18,7 +18,6 @@ def NewProcess(env,name, time, DES):
         yield DES.RAM.get(memory)
         print("RAM's memory has changed to %d"%DES.RAM.level)
         
-#dkdkdk
         #Cicle while there is at least one instruction left
         while (ins>0):
             with DES.CPU.request() as run:
@@ -27,7 +26,6 @@ def NewProcess(env,name, time, DES):
                 
                 #To run the instructions
                 counter = 0
-                print(DES.Processor)
                 while (counter<DES.Processor):
                     ins -= 1
                     if (ins<=0):
@@ -59,20 +57,7 @@ def NewProcess(env,name, time, DES):
         print("%d amount of memory has been returned to RAM, RAM's memory status : %d"%(memory, DES.RAM.level))
         time= env.now-time
         list.append(time)
-
-#The function cases
-def cases(env, ins, name):
-    if (ins>0):
-        case = bool(random.getrandbits(1))
-        if (case):
-            print("At %d: the %s has %s instructions left, status: READY" %(env.now,name, ins))
-        else:
-            print("At %d: the %s is ready to do I/O operations, status: WAITING" %(env.now,name))
-            #The operations done in the I/O are done in a random amount of time between 1 and 10
-            yield env.timeout(random.randint(1,10))
-            print("At %d: the %s has done the I/O operations, it has %d instructions left, status: READY " %(env.now,name, ins))
-        print(case)    
-            
+        
         
 
 
@@ -123,7 +108,7 @@ try:
     try:
         #get mean and standard deviation
         mean = sum(list)/len(list)
-        devSt=standarDeviation(list, mean)
+        devSt = standarDeviation(list, mean)
     except:
         mean=0
         devSt=0
@@ -133,7 +118,7 @@ try:
 
 
     print("The mean time for a process while using %d amount of RAM, %d amount of CPU and an interval of comming of %d is: %d units of time"% (val, amo,interval,mean))
-    print("The standar deviation time for a process while using %d amount of RAM, %d amount of CPU and an interval of comming of %d is: %d units of time"% (val, amo,interval, devSt))
+    print("The standard deviation time for a process while using %d amount of RAM, %d amount of CPU and an interval of comming of %d is: %d units of time"% (val, amo,interval, devSt))
 
 
 except:
