@@ -151,7 +151,7 @@ for k in range(0,9):
         listNum.append(num)
         val = 100
         listVal.append(val)
-        amo = 1
+        amo = 2
         listAmo.append(amo)
         interval = 1
         listInterval.append(interval)
